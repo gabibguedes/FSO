@@ -11,7 +11,6 @@ Matricula: 16/0121612
 #include <semaphore.h>
 
 int tickets_created[100] = {0};
-pthread_t id, id2;
 sem_t S;
 
 
@@ -49,19 +48,22 @@ void * thread_to_destroy(void * a){
 }
 
 int main(){
-    char enter;
+    int threads, i=0;
     srand(time(NULL));
-    int threads;
     printf("Quantas tickets quer criar? ");
     scanf("%d", &threads);
     printf("\n\n");
     pthread_t ids[threads];
     sem_init (&S,0,1);
     
-    for(int i=0;i<threads;i++){
-        pthread_create (&id, NULL, (void *) thread_to_create, NULL);
-        pthread_create (&id2, NULL, (void *) thread_to_destroy,NULL);
+    while(i< (threads * 2)){
+        pthread_create (&ids[i], NULL, (void *) thread_to_create, NULL);
+        i++;
+        pthread_create (&ids[i], NULL, (void *) thread_to_destroy,NULL);
+        i++;
     }
-    pause();
+    for(int i=0;i<threads;i++){
+        pthread_join(ids[i],NULL);
+    }
     return 0;    
 }

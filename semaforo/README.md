@@ -23,3 +23,5 @@ Para executar rode os comando:
 $ gcc semaforo.c -lpthread -o a
 $ ./a
 ```
+
+Escolha o número de tickets desejados e veja o resultado.
