@@ -48,15 +48,18 @@ void * thread_to_destroy(void * a){
 }
 
 int main(){
-    int threads, i=0;
+    int threads, tickets, i=0;
     srand(time(NULL));
     printf("Quantas tickets quer criar? ");
-    scanf("%d", &threads);
+    scanf("%d", &tickets);
     printf("\n\n");
+
+    threads = 2*tickets;
+
     pthread_t ids[threads];
     sem_init (&S,0,1);
     
-    while(i< (threads * 2)){
+    while(i< (threads)){
         pthread_create (&ids[i], NULL, (void *) thread_to_create, NULL);
         i++;
         pthread_create (&ids[i], NULL, (void *) thread_to_destroy,NULL);
