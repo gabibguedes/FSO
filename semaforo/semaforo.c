@@ -15,11 +15,23 @@ sem_t S;
 
 
 int get_ticket(){
+    int free_values = 0;
     int t = rand() % 100;
-    while(tickets_created[t] != 0){
-        get_ticket();
-    }
+
     sem_wait(&S);
+    for(int i=0; i<100; i++){
+        if (tickets_created[i] == 0){
+            free_values++;
+        }
+    }
+    if(free_values == 0){
+        printf("Todos os tickets estão ocupados");
+        return -1;
+    }
+    
+    while(tickets_created[t] != 0){
+        t = rand() % 100;
+    }
     tickets_created[t] = 1;
     printf("Ticket criado: %d\n", t);
     sem_post (&S);
